@@ -7,6 +7,7 @@ std::string askPlayerGoFirst();
 void playerChoice(char board[3][3], const char symbole);
 void cpuChoice(char board[3][3], const char symbole);
 void checkBoard(const char board[3][3]);
+bool checkWin(char board[3][3]);
 
 
 int main() {
@@ -32,8 +33,6 @@ void playGame() {
     int cpuScore = 0;
     std::string firstMove;
     std::string secondMove;
-    
-    
 
     std::cout << "====== TIC TAC TOE ======\n";
     firstMove = askPlayerGoFirst();
@@ -41,8 +40,22 @@ void playGame() {
 
     std::cout << "First[X]: " << firstMove << "\nSecond[O]: " << secondMove << '\n';
 
-    printBoard(board);
+    if (firstMove == "player") {
+        player = 'X';
+        cpu = 'O';
+    }
+    else {
+        player = 'O';
+        cpu = 'X';
+    }
 
+    printBoard(board);
+    playerChoice(board, player);
+    printBoard(board);
+    playerChoice(board, player);
+    printBoard(board);
+    playerChoice(board, player);
+    printBoard(board);
 
 
 }
@@ -72,12 +85,32 @@ std::string askPlayerGoFirst() {
     return "player";
 }
 
-void playerChoice(char board[3][3]) {
+void playerChoice(char board[3][3], const char symbole) {
+    int row;
+    int column;
+    std::cout << "Row (1-3): ";
+    std::cin >> row;
+    std::cout << "Colunm (1-3): ";
+    std::cin >> column;
 
+    row--;
+    column--;
+
+    board[row][column] = symbole;
 }
 
-void cpuChoice(char board[3][3]) {
+void cpuChoice(char board[3][3], const char symbole) {
     srand(time(0));
-    int randNum = rand();
+    int row = (rand() % 3);
+    int column = (rand() % 3);
 
+    board[row][column] = symbole;
+}
+
+bool checkWin(char board[3][3]) {
+
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+        return true;
+    }
+    return false;
 }
