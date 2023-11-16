@@ -29,8 +29,6 @@ void playGame() {
     char board[3][3] = {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
     char player = 'X';
     char cpu = 'O';
-    int playerScore = 0;
-    int cpuScore = 0;
     int playerTurn = 0;
     std::string firstMove;
     std::string secondMove;
