@@ -27,10 +27,11 @@ int main() {
 void playGame() {
 
     char board[3][3] = {{' ', ' ', ' '},{' ', ' ', ' '},{' ', ' ', ' '}};
-    char player;
-    char cpu;
+    char player = 'X';
+    char cpu = 'O';
     int playerScore = 0;
     int cpuScore = 0;
+    int playerTurn = 0;
     std::string firstMove;
     std::string secondMove;
 
@@ -38,26 +39,37 @@ void playGame() {
     firstMove = askPlayerGoFirst();
     secondMove = (firstMove == "player") ? "cpu" : "player";
 
-    std::cout << "First[X]: " << firstMove << "\nSecond[O]: " << secondMove << '\n';
+    std::cout << "# First: " << firstMove << "\n# Second: " << secondMove << '\n';
 
     if (firstMove == "player") {
-        player = 'X';
-        cpu = 'O';
+        playerTurn = 1;
+    }
+
+    printBoard(board);
+    std::cout << '\n';
+
+    do {
+        if (playerTurn == 1) {
+            playerChoice(board, player);
+            playerTurn = 0;
+            std::cout << "# PLAYER: \n";
+        }
+        else {
+            cpuChoice(board, cpu);
+            playerTurn = 1;
+            std::cout << "# CPU: \n";
+        }
+        printBoard(board);
+        std::cout << '\n';
+
+    } while (checkWin(board) != true);
+
+    if(playerTurn == 1) {
+        std::cout << "CPU WINS\n";
     }
     else {
-        player = 'O';
-        cpu = 'X';
+        std::cout << "PLAYER WINS\n";
     }
-
-    printBoard(board);
-    playerChoice(board, player);
-    printBoard(board);
-    playerChoice(board, player);
-    printBoard(board);
-    playerChoice(board, player);
-    printBoard(board);
-
-
 }
 
 void printBoard(const char board[3][3]) {
@@ -101,16 +113,34 @@ void playerChoice(char board[3][3], const char symbole) {
 
 void cpuChoice(char board[3][3], const char symbole) {
     srand(time(0));
-    int row = (rand() % 3);
-    int column = (rand() % 3);
+    int row;
+    int column;
+
+    do {
+        row = rand() % 3;
+        column = rand() % 3;
+    } while (board[row][column] != ' ');
 
     board[row][column] = symbole;
 }
 
 bool checkWin(char board[3][3]) {
 
-    if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != ' ') {
         return true;
+    }
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[1][1] != ' ') {
+        return true;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][1] != ' ') {
+        return true;
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[1][i] != ' ') {
+        return true;
+        }
     }
     return false;
 }
