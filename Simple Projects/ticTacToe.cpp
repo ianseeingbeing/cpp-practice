@@ -7,7 +7,7 @@ std::string askPlayerGoFirst();
 void playerChoice(char board[3][3], const char symbole);
 void cpuChoice(char board[3][3], const char symbole);
 void checkBoard(const char board[3][3]);
-bool checkWin(char board[3][3]);
+bool checkWin(const char board[3][3]);
 
 
 int main() {
@@ -122,7 +122,7 @@ void cpuChoice(char board[3][3], const char symbole) {
     board[row][column] = symbole;
 }
 
-bool checkWin(char board[3][3]) {
+bool checkWin(const char board[3][3]) {
 
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != ' ') {
         return true;
